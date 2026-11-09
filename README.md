@@ -11,12 +11,18 @@ Gerador de assinaturas de email em HTML, em duas versões (clara e escura), a pa
 | `img/` | `logo-vallado.png` e `logo-sponsor.png` (2×, exportados do PDF) |
 | `test.js` | Auto-teste: `node test.js` |
 
-## Antes de usar: alojar as imagens
+## Online
 
-Os clientes de email só mostram imagens que estejam num endereço público `https`.
+- Gerador: <https://oicnanev.github.io/mail-signature/>
+- Imagens (GitHub Pages): <https://oicnanev.github.io/mail-signature/img/>. É o endereço predefinido no gerador.
+
+## Alojar as imagens noutro sítio
+
+Os clientes de email só mostram imagens que estejam num endereço público `https`. O endereço do GitHub Pages serve para começar. Mais tarde convém mudar para o site da Vallado:
 
 1. Põe os 2 ficheiros de `img/` numa pasta pública, por exemplo `https://www.quintadovallado.com/assinatura/img/`.
 2. No gerador, preenche **Endereço das imagens** com essa pasta (tem de acabar em `/`).
+3. As assinaturas já enviadas continuam a apontar para o endereço antigo, por isso não apagues o GitHub Pages enquanto forem usadas.
 
 Para trocar o patrocinador, substitui `logo-sponsor.png` no mesmo endereço. Todas as assinaturas já enviadas passam a mostrar o novo logo. Quem apagar ou mover os ficheiros parte todas as assinaturas.
 
