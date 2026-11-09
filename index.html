@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gerador de assinatura</title>
+<style>
+  :root { --fundo:#f5f3ef; --card:#fff; --texto:#1c1a18; --suave:#6b665f; --linha:#ddd8d0; --laranja:#f7a645; --erro:#a4400b; --ok:#2f6b3a; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--fundo); color:var(--texto); font:16px/1.45 system-ui, sans-serif; }
+  main { max-width:1180px; margin:0 auto; padding:24px 16px 48px; display:grid; gap:24px; grid-template-columns:minmax(280px,380px) 1fr; align-items:start; }
+  @media (max-width:860px) { main { grid-template-columns:1fr; } }
+  h1 { grid-column:1/-1; margin:0; font-size:1.4rem; }
+  form, .previa { background:var(--card); border:1px solid var(--linha); border-radius:10px; padding:18px; }
+  label { display:block; margin-top:12px; font-size:.85rem; font-weight:600; }
+  label:first-child { margin-top:0; }
+  input[type=text], input[type=url], textarea { width:100%; margin-top:4px; padding:8px 10px; font:inherit; border:1px solid var(--linha); border-radius:6px; background:#fff; color:inherit; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible { outline:3px solid var(--laranja); outline-offset:1px; }
+  fieldset { border:0; margin:16px 0 0; padding:0; display:flex; gap:20px; }
+  fieldset label { margin:0; font-weight:400; font-size:1rem; }
+  legend { font-size:.85rem; font-weight:600; padding:0; margin-bottom:6px; }
+  small { display:block; margin-top:4px; color:var(--suave); font-size:.8rem; }
+  .estado { font-size:.85rem; margin-top:6px; }
+  .estado.erro { color:var(--erro); } .estado.ok { color:var(--ok); }
+  .previa { overflow-x:auto; }
+  .previa h2 { margin:0 0 12px; font-size:.85rem; color:var(--suave); font-weight:600; }
+  #previa { background:#e9e5de; padding:20px; border-radius:6px; min-width:640px; }
+  .acoes { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:16px; }
+  button { font:inherit; font-weight:600; padding:10px 18px; border-radius:6px; border:1px solid var(--texto); background:var(--texto); color:#fff; cursor:pointer; }
+  button.sec { background:transparent; color:var(--texto); }
+  #msg { font-size:.9rem; color:var(--ok); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Gerador de assinatura de email</h1>
+
+  <form id="form" autocomplete="off" onsubmit="return false">
+    <label>Nome <input type="text" id="nome"></label>
+    <label>Cargo <input type="text" id="cargo"></label>
+    <label>Telemóvel <input type="text" id="telefone" inputmode="tel"></label>
+    <label>Site <input type="text" id="site" placeholder="www.exemplo.com"></label>
+    <label>Morada <input type="text" id="morada"></label>
+    <label>Instagram (link) <input type="text" id="instagram" placeholder="https://instagram.com/..."></label>
+    <label>Facebook (link) <input type="text" id="facebook" placeholder="https://facebook.com/..."></label>
+    <label>LinkedIn (link) <input type="text" id="linkedin" placeholder="https://linkedin.com/..."></label>
+    <small>Deixa um link vazio para esconder o ícone respetivo.</small>
+    <label>Frase promocional <textarea id="frase" rows="3"></textarea>
+      <small>Uma linha em branco/Enter quebra a linha. Deixa vazio para não mostrar.</small></label>
+    <fieldset>
+      <legend>Versão</legend>
+      <label><input type="radio" name="tema" value="claro" checked> Clara</label>
+      <label><input type="radio" name="tema" value="escuro"> Escura</label>
+    </fieldset>
+    <label>Endereço das imagens
+      <input type="text" id="base" placeholder="https://www.exemplo.com/assinatura/img/">
+      <small>Pasta pública (https) onde estão os ficheiros da pasta <code>img/</code>.</small>
+      <div id="estadoBase" class="estado" role="status"></div></label>
+  </form>
+
+  <section class="previa">
+    <h2>Pré-visualização</h2>
+    <div id="previa"></div>
+    <div class="acoes">
+      <button type="button" id="copiar">Copiar assinatura</button>
+      <button type="button" id="repor" class="sec">Repor exemplo</button>
+      <span id="msg" role="status"></span>
+    </div>
+    <small>Depois de copiar, cola nas definições de assinatura do Gmail ou do Outlook (no Outlook: Ficheiro → Opções → Correio → Assinaturas).</small>
+  </section>
+</main>
+
+<script src="assinatura.js"></script>
+<script>
+const CAMPOS = ['nome','cargo','telefone','site','morada','instagram','facebook','linkedin','frase','base'];
+const EXEMPLO = {
+  nome: 'Sandra Pinho', cargo: 'Marketing Director', telefone: '+351 935 870 103',
+  site: 'www.quintadovallado.com', morada: 'Praceta de Sagres, 105 | 4405-700 Gulpilhares, Portugal',
+  instagram: 'https://www.instagram.com/', facebook: 'https://www.facebook.com/', linkedin: 'https://www.linkedin.com/',
+  frase: 'A magia da Passagem de Ano está de volta ao Douro.\nDe 29 de dezembro a 1 de janeiro, participe numa experiência de excelência.',
+  base: 'img/', tema: 'claro',
+};
+const $ = (id) => document.getElementById(id);
+const CHAVE = 'assinatura:v1';
+
+const ler = () => { try { return { ...EXEMPLO, ...JSON.parse(localStorage.getItem(CHAVE) || '{}') }; } catch { return { ...EXEMPLO }; } };
+const guardar = (d) => { try { localStorage.setItem(CHAVE, JSON.stringify(d)); } catch {} };
+
+const tema = () => document.querySelector('input[name=tema]:checked').value;
+const dados = () => Object.fromEntries(CAMPOS.map((c) => [c, $(c).value]));
+
+function preencher(d) {
+  CAMPOS.forEach((c) => ($(c).value = d[c] ?? ''));
+  document.querySelector(`input[name=tema][value=${d.tema}]`).checked = true;
+}
+
+function atualizar() {
+  const d = dados();
+  guardar({ ...d, tema: tema() });
+  // a pré-visualização usa sempre as imagens locais; o endereço público só vai para a assinatura copiada
+  $('previa').innerHTML = build(d, tema(), 'img/');
+  const https = /^https:\/\/\S+\/$/.test(d.base.trim());
+  $('estadoBase').className = 'estado ' + (https ? 'ok' : 'erro');
+  $('estadoBase').textContent = https
+    ? 'OK.'
+    : 'Tem de começar por https:// e acabar em /. Sem isto, as imagens não aparecem nos emails.';
+}
+
+async function copiar() {
+  const html = build(dados(), tema(), dados().base.trim());
+  let ok = true;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({
+      'text/html': new Blob([html], { type: 'text/html' }),
+      'text/plain': new Blob([$('previa').innerText], { type: 'text/plain' }),
+    })]);
+  } catch {
+    const caixa = document.createElement('div');
+    caixa.innerHTML = html;
+    caixa.style.cssText = 'position:fixed;left:-9999px';
+    document.body.append(caixa);
+    const sel = getSelection(), r = document.createRange();
+    r.selectNodeContents(caixa); sel.removeAllRanges(); sel.addRange(r);
+    ok = document.execCommand('copy');
+    sel.removeAllRanges(); caixa.remove();
+  }
+  $('msg').textContent = ok ? 'Copiada. Cola nas definições de assinatura.' : 'Não foi possível copiar: seleciona a pré-visualização e usa Ctrl+C.';
+  setTimeout(() => ($('msg').textContent = ''), 5000);
+}
+
+preencher(ler());
+$('form').addEventListener('input', atualizar);
+$('copiar').addEventListener('click', copiar);
+$('repor').addEventListener('click', () => { preencher(EXEMPLO); atualizar(); });
+atualizar();
+</script>
+</body>
+</html>
