@@ -1,6 +1,6 @@
 # Assinatura de email (Vallado)
 
-Gerador de assinaturas de email em HTML, em duas versões (clara e escura), a partir da maquete do designer. Abre `index.html`, preenche os campos, escolhe a versão e carrega em **Copiar assinatura**.
+Gerador de assinaturas de email em HTML, em duas versões (clara e escura). Abre `index.html`, preenche os campos, escolhe a versão e carrega em **Copiar assinatura**.
 
 ## Ficheiros
 
@@ -18,13 +18,13 @@ Gerador de assinaturas de email em HTML, em duas versões (clara e escura), a pa
 
 ## Alojar as imagens noutro sítio
 
-Os clientes de email só mostram imagens que estejam num endereço público `https`. O endereço do GitHub Pages serve para começar. Mais tarde convém mudar para o site da Vallado:
+Os clientes de email só mostram imagens que estejam num endereço público `https`. O endereço do GitHub Pages serve para começar. Mais tarde convém mudar para o site da Vallado, uma vez que não têm acesso à alteração de imagens:
 
-1. Põe os 2 ficheiros de `img/` numa pasta pública, por exemplo `https://www.quintadovallado.com/assinatura/img/`.
-2. No gerador, preenche **Endereço das imagens** com essa pasta (tem de acabar em `/`).
-3. As assinaturas já enviadas continuam a apontar para o endereço antigo, por isso não apagues o GitHub Pages enquanto forem usadas.
+1. Colocar os 2 ficheiros de `img/` numa pasta pública, por exemplo `https://www.quintadovallado.com/assinatura/img/`.
+2. No gerador, preencher **Endereço das imagens** com o endereço dessa pasta (tem de acabar em `/`).
+3. As assinaturas já enviadas continuam a apontar para o endereço antigo, o GitHub Pages enquanto forem usadas.
 
-Para trocar o patrocinador, substitui `logo-sponsor.png` no mesmo endereço. Todas as assinaturas já enviadas passam a mostrar o novo logo. Quem apagar ou mover os ficheiros parte todas as assinaturas.
+Para trocar o patrocinador, substituir `logo-sponsor.png` no mesmo endereço. Todas as assinaturas já enviadas passam a mostrar o novo logo. Quem apagar ou mover os ficheiros parte todas as assinaturas.
 
 ## Como usar a assinatura
 
@@ -34,8 +34,8 @@ Para trocar o patrocinador, substitui `logo-sponsor.png` no mesmo endereço. Tod
 ## Limites conhecidos
 
 - A versão (clara/escura) é uma escolha de quem envia; o destinatário vê sempre a mesma, porque os fundos estão fixados na assinatura.
-- Largura fixa de 600 px (sem layout responsivo próprio).
-- Tipo de letra: Garamond se existir, senão Times New Roman. O texto continua editável, mas o aspeto varia ligeiramente.
+- Largura fixa de 600 px.
+- Tipo de letra: Garamond se existir no equipamento de quem recebe / envia o email, senão Times New Roman. O texto continua editável, mas o aspeto varia ligeiramente.
 - No Outlook desktop os ícones IG/FB/LK aparecem quadrados em vez de redondos.
-- O logo e o logo do patrocinador foram exportados do PDF (vetor rasterizado). Se o designer enviar os originais, substituir os ficheiros de `img/` com o mesmo nome e proporção (280×256 e 308×256).
+- O logotipo e o logotipo do patrocinador foram exportados do PDF (vetor rasterizado). Caso haja originais, substituir os ficheiros de `img/` com o mesmo nome e proporção (280×256 e 308×256).
 - Os campos preenchidos ficam guardados no navegador (`localStorage`).
