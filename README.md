@@ -7,8 +7,8 @@ Gerador de assinaturas de email em HTML, em duas versões (clara e escura), a pa
 | Ficheiro | Para quê |
 |---|---|
 | `index.html` | Formulário + pré-visualização + botão de copiar |
-| `assinatura.js` | Gera o HTML da assinatura (tabelas + CSS inline) |
-| `img/` | `logo-vallado.png` e `logo-patrocinio.png` (2×, exportados do PDF) |
+| `signature.js` | Gera o HTML da assinatura (tabelas + CSS inline) |
+| `img/` | `logo-vallado.png` e `logo-sponsor.png` (2×, exportados do PDF) |
 | `test.js` | Auto-teste: `node test.js` |
 
 ## Antes de usar: alojar as imagens
@@ -18,7 +18,7 @@ Os clientes de email só mostram imagens que estejam num endereço público `htt
 1. Põe os 2 ficheiros de `img/` numa pasta pública, por exemplo `https://www.quintadovallado.com/assinatura/img/`.
 2. No gerador, preenche **Endereço das imagens** com essa pasta (tem de acabar em `/`).
 
-Para trocar o patrocinador, substitui `logo-patrocinio.png` no mesmo endereço. Todas as assinaturas já enviadas passam a mostrar o novo logo. Quem apagar ou mover os ficheiros parte todas as assinaturas.
+Para trocar o patrocinador, substitui `logo-sponsor.png` no mesmo endereço. Todas as assinaturas já enviadas passam a mostrar o novo logo. Quem apagar ou mover os ficheiros parte todas as assinaturas.
 
 ## Como usar a assinatura
 
