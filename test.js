@@ -21,4 +21,10 @@ assert(light.includes('src="https://h.pt/i/logo-vallado.png"'), 'uses the images
 assert(light.includes('#ffffff') && !light.includes('#13100e'), 'light theme');
 assert(dark.includes('#13100e'), 'dark theme');
 assert(!build({ ...data, tagline: '' }).includes('font-style:italic'), 'no tagline, no tagline row');
+assert(light.includes('width="600"') && light.includes('width:600px;max-width:100%'), 'fixed 600px for Outlook, never wider than the screen');
+assert(/width:23\.333%[^>]*><img [^>]*logo-vallado\.png[^>]*width:100%;max-width:140px;height:auto/.test(light), 'Vallado logo: 140px column that scales');
+assert(/width:25\.667%[^>]*><img [^>]*logo-sponsor\.png[^>]*width:100%;max-width:154px;height:auto/.test(light), 'sponsor logo: 154px column that scales');
+assert(light.includes('+351&nbsp;912&nbsp;345&nbsp;678'), 'phone number never splits at spaces');
+assert(build({ ...data, phone: '912-345-678' }).includes('912&#8209;345&#8209;678'), 'phone number never splits at hyphens');
+assert(light.includes('overflow-wrap:anywhere'), 'long unbroken text wraps instead of widening the signature');
 console.log('ok');
