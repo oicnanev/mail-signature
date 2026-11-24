@@ -25,6 +25,9 @@
   .preview-panel { overflow-x:auto; }
   .preview-panel h2 { margin:0 0 12px; font-size:.85rem; color:var(--muted); font-weight:600; }
   #preview { background:#e9e5de; padding:20px; border-radius:6px; min-width:640px; }
+  /* phone: ~375px screen minus the email app's side margins */
+  #preview.phone { min-width:0; width:375px; max-width:100%; padding:20px 12px; }
+  .preview-panel fieldset { margin:0 0 12px; }
   .actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:16px; }
   button { font:inherit; font-weight:600; padding:10px 18px; border-radius:6px; border:1px solid var(--text); background:var(--text); color:#fff; cursor:pointer; }
   button.secondary { background:transparent; color:var(--text); }
@@ -60,6 +63,11 @@
 
   <section class="preview-panel">
     <h2>Pré-visualização</h2>
+    <fieldset>
+      <legend>Ver como</legend>
+      <label><input type="radio" name="device" value="desktop" checked> Computador</label>
+      <label><input type="radio" name="device" value="phone"> Telemóvel</label>
+    </fieldset>
     <div id="preview"></div>
     <div class="actions">
       <button type="button" id="copy">Copiar assinatura</button>
@@ -129,6 +137,9 @@ async function copySignature() {
   $('message').textContent = ok ? 'Copiada. Cola nas definições de assinatura.' : 'Não foi possível copiar: seleciona a pré-visualização e usa Ctrl+C.';
   setTimeout(() => ($('message').textContent = ''), 5000);
 }
+
+document.querySelectorAll('input[name=device]').forEach((r) =>
+  r.addEventListener('change', () => $('preview').classList.toggle('phone', r.value === 'phone' && r.checked)));
 
 fillForm(loadSaved());
 $('form').addEventListener('input', refresh);

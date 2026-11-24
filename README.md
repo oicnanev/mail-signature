@@ -34,7 +34,9 @@ Para trocar o patrocinador, substituir `logo-sponsor.png` no mesmo endereço. To
 ## Limites conhecidos
 
 - A versão (clara/escura) é uma escolha de quem envia; o destinatário vê sempre a mesma, porque os fundos estão fixados na assinatura.
-- Largura fixa de 600 px.
+- Largura: 600 px no computador. Em ecrãs mais estreitos (telemóveis) a assinatura encolhe sozinha: os logótipos e as colunas diminuem na mesma proporção, mas o texto mantém o tamanho (10–18 px, o mínimo para se ler bem) e passa para a linha seguinte quando não cabe. Não usa `@media`, porque a maioria dos clientes apaga-o das assinaturas.
+- No Outlook desktop (Windows) a assinatura fica sempre com 600 px, como antes.
+- No gerador, **Ver como → Telemóvel** mostra o aspeto num ecrã de ~375 px.
 - Tipo de letra: Garamond se existir no equipamento de quem recebe / envia o email, senão Times New Roman. O texto continua editável, mas o aspeto varia ligeiramente.
 - No Outlook desktop os ícones IG/FB/LK aparecem quadrados em vez de redondos.
 - O logotipo e o logotipo do patrocinador foram exportados do PDF (vetor rasterizado). Caso haja originais, substituir os ficheiros de `img/` com o mesmo nome e proporção (280×256 e 308×256).
